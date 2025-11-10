@@ -93,7 +93,7 @@ export const requestStreamUploadUrl = action({
  *
  * @see https://developers.cloudflare.com/stream/manage-video-library/using-webhooks/
  */
-export const handleStreamWebhook = httpAction(async (ctx, request) => {
+export const handleStreamWebhook = httpAction(async (ctx: any, request: Request) => {
   console.log("[media:webhook] Received webhook");
 
   // Validate environment variables

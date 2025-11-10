@@ -77,7 +77,7 @@ export function Timeline({ compositionId, onElementSelect, selectedElementId }: 
         currentComposition.ir.elements.map((el: any) => [el.id, el])
       );
       const reorderedElements = args.elementIds
-        .map((id) => elementMap.get(id))
+        .map((id: string) => elementMap.get(id))
         .filter(Boolean);
 
       localStore.setQuery(

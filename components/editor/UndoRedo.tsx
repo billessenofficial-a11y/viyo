@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
@@ -20,6 +20,22 @@ export function UndoRedo({ compositionId }: UndoRedoProps) {
   });
   const undo = useMutation(api.history.undo);
   const history = useQuery(api.history.getHistory, { compositionId, limit: 10 });
+
+  const handleUndo = useCallback(async () => {
+    try {
+      const result = await undo({ compositionId });
+      if (result.success) {
+        console.log(result.message);
+      }
+    } catch (error) {
+      console.error("Undo failed:", error);
+    }
+  }, [compositionId, undo]);
+
+  const handleRedo = useCallback(async () => {
+    // TODO: Implement redo (need to track forward in history)
+    console.log("Redo not yet implemented");
+  }, []);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -43,23 +59,7 @@ export function UndoRedo({ compositionId }: UndoRedoProps) {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [undoRedoState?.canUndo, undoRedoState?.canRedo]);
-
-  const handleUndo = async () => {
-    try {
-      const result = await undo({ compositionId });
-      if (result.success) {
-        console.log(result.message);
-      }
-    } catch (error) {
-      console.error("Undo failed:", error);
-    }
-  };
-
-  const handleRedo = async () => {
-    // TODO: Implement redo (need to track forward in history)
-    console.log("Redo not yet implemented");
-  };
+  }, [undoRedoState?.canUndo, undoRedoState?.canRedo, handleUndo, handleRedo]);
 
   if (!undoRedoState) {
     return null;

@@ -54,7 +54,7 @@ export function Disambiguator({
           </h3>
           {userMessage && (
             <p className="text-sm text-neutral-400">
-              Your request: "{userMessage}"
+              Your request: &ldquo;{userMessage}&rdquo;
             </p>
           )}
         </div>
